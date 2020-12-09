@@ -1,0 +1,10 @@
+name: env
+channel:
+- conda-forge
+dependencies:
+- python>=3.8
+- pytest
+- pandas
+- numpy
+- tqdm
+- matplotlib
