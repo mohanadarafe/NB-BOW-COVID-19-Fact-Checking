@@ -24,13 +24,7 @@ def filteredVocabulary(filename: str) -> dict:
     We keep all the information we need using the following format:
     term -> [frequency, # of yes's, # of no's]
     '''
-    data = utils.load_data(filename)
-    vocabulary = dict()
-
-    for tokens in data:
-        tokensList = tokens[1].split(" ")
-        sentiment = tokens[2]
-        utils.build_vocabulary(vocabulary, tokensList, sentiment)
+    vocabulary = originalVocabulary(filename)
 
     for key in list(vocabulary):
         if vocabulary[key][0] == 1:
@@ -39,5 +33,7 @@ def filteredVocabulary(filename: str) -> dict:
     return vocabulary
 
 if __name__ == "__main__":
-    d1 = originalVocabulary()
-    d2 = filteredVocabulary()
+    d1 = originalVocabulary("data/covid_training.tsv")
+    d2 = filteredVocabulary("data/covid_training.tsv")
+    print(f'Size of Original Vocabulary: {len(d1)}')
+    print(f'Size of Filtered Vocabulary: {len(d2)}')
