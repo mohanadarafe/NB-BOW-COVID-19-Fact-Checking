@@ -56,13 +56,13 @@ def build_conf_matrix(prediction: str, true_value: str, conf_matrix):
     '''
     Actively builds the confusion matrix per tweet visited.
     '''
-    if prediction == true_value:
+    if prediction == 'yes' and  true_value == 'yes':
         conf_matrix[0][0] += 1 #TP
     elif prediction == 'yes' and true_value == 'no':
         conf_matrix[0][1] += 1 #FP
     elif prediction == 'no' and true_value == 'yes':
         conf_matrix[1][0] += 1 #FN
-    else:
+    elif prediction == 'no' and true_value == 'no':
         conf_matrix[1][1] += 1 #TN
 
 def get_metrics(conf_matrix) -> dict:

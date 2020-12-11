@@ -23,10 +23,10 @@ class NaiveBayes:
         data = utils.load_data(self.fileName)
 
         for tweet in data:
-            tokensList = tweet[1].split()
+            tokensList = tweet[1].lower().split()
             yes_score = math.log10(self.yesPrior) + sum([math.log10(self.conditional(token, 'yes')) for token in tokensList])
             no_score = math.log10(self.noPrior) + sum([math.log10(self.conditional(token, 'no')) for token in tokensList])
-            
+
             best_score = yes_score if yes_score > no_score else no_score
             prediction = 'yes' if yes_score > no_score else 'no'
             true_value = tweet[2]

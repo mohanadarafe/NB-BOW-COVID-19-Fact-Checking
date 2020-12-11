@@ -11,7 +11,7 @@ def originalVocabulary(filename: str) -> dict:
     vocabulary = dict()
 
     for tokens in data:
-        tokensList = tokens[1].split()
+        tokensList = tokens[1].lower().split()
         sentiment = tokens[2]
         utils.build_vocabulary(vocabulary, tokensList, sentiment)
 
