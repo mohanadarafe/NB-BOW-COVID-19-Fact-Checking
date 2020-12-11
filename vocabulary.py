@@ -27,13 +27,21 @@ def filteredVocabulary(filename: str) -> dict:
     vocabulary = originalVocabulary(filename)
 
     for key in list(vocabulary):
-        if vocabulary[key][0] == 1:
+        if vocabulary[key][0] + vocabulary[key][1] <= 1:
             vocabulary.pop(key)
 
     return vocabulary
 
 if __name__ == "__main__":
-    d1 = originalVocabulary("data/covid_training.tsv")
-    d2 = filteredVocabulary("data/covid_training.tsv")
+    TRAINING_FILE = "data/covid_training.tsv"
+    TESTING_FILE = "data/covid_test_public.tsv"
+    d1 = originalVocabulary(TRAINING_FILE)
+    d2 = filteredVocabulary(TRAINING_FILE)
     print(f'Size of Original Vocabulary: {len(d1)}')
     print(f'Size of Filtered Vocabulary: {len(d2)}')
+    print(f'Count of words in YES class in OV: {utils.total_word_in_class(d1)}')
+    print(f'Count of words in NO class in OV: {utils.total_word_in_class(d1, False)}')
+    print(f'Count of words in YES class in FV: {utils.total_word_in_class(d2)}')
+    print(f'Count of words in NO class in FV: {utils.total_word_in_class(d2, False)}')
+    print(f'Count of YES tweets: {utils.total_yes_no(TRAINING_FILE)}')
+    print(f'Count of YES tweets: {utils.total_yes_no(TRAINING_FILE, False)}')
