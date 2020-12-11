@@ -56,7 +56,7 @@ class NaiveBayes:
         metrics = utils.get_metrics(conf_matrix)
         with open(f"results/eval_NB_BOW_{vocabularyType}.txt", "w") as f:
             f.write(f'{round(metrics["accuracy"], 4)}\n')
-            f.write(f'{round(metrics["precision"]["yes"], 4)}  {round(metrics["precision"]["yes"], 4)}\n')
+            f.write(f'{round(metrics["precision"]["yes"], 4)}  {round(metrics["precision"]["no"], 4)}\n')
             f.write(f'{round(metrics["recall"]["yes"], 4)}  {round(metrics["recall"]["no"], 4)}\n')
             f.write(f'{round(metrics["F1"]["yes"], 4)}  {round(metrics["F1"]["no"], 4)}')
 
