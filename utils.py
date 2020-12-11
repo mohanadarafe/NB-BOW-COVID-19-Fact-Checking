@@ -43,7 +43,10 @@ def total_yes_no(fileName: str, getFactual = True) -> int:
 
 def total_word_in_class(vocabulary: dict, getYes = True) -> int:
     '''
-    Gets the total number of words in the factual class.
+    Gets the total number of words in a class.
+
+    If getYes is true, we return the count of yes's,
+    otherwise, we return the count of no's.
     '''
     counter = 0
     position = 0 if getYes else 1

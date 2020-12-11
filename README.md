@@ -11,3 +11,9 @@ Make sure you have Conda installed on your machine
 conda env create --name bow --file=environment.yml
 conda activate bow
 ```
+
+### Running the program
+In order to run the program with a vocabulary of your choice, execute the following command:
+```
+python run.py
+```

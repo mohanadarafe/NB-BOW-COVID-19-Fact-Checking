@@ -54,7 +54,7 @@ class NaiveBayes:
         assert len(self.trace_list) > 0, "Make sure you make predictions first!"
         vocabularyType = 'OV' if self.originalVocabulary else 'FV'
         metrics = utils.get_metrics(conf_matrix)
-        with open(f"eval_NB_BOW_{vocabularyType}.txt", "w") as f:
+        with open(f"results/eval_NB_BOW_{vocabularyType}.txt", "w") as f:
             f.write(f'{round(metrics["accuracy"], 4)}\n')
             f.write(f'{round(metrics["precision"]["yes"], 4)}  {round(metrics["precision"]["yes"], 4)}\n')
             f.write(f'{round(metrics["recall"]["yes"], 4)}  {round(metrics["recall"]["no"], 4)}\n')
@@ -67,11 +67,6 @@ class NaiveBayes:
         assert len(self.trace_list) > 0, "Make sure you make predictions first!"
         vocabularyType = 'OV' if self.originalVocabulary else 'FV'
 
-        with open(f"trace_NB_BOW_{vocabularyType}.txt", "w") as f:
+        with open(f"results/trace_NB_BOW_{vocabularyType}.txt", "w") as f:
             for res in self.trace_list:
                 f.write(res + '\n')
-
-TRAINING_FILE = "data/covid_training.tsv"
-TESTING_FILE = "data/covid_test_public.tsv"
-model = NaiveBayes(TRAINING_FILE, TESTING_FILE, isOriginal=False)
-model.predict()
