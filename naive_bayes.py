@@ -21,7 +21,6 @@ class NaiveBayes:
         '''
         conf_matrix = np.zeros(4).reshape(2,2)
         data = utils.load_data(self.fileName)
-        correct_prediction = 0
 
         for tweet in data:
             tokensList = tweet[1].split()
@@ -32,20 +31,11 @@ class NaiveBayes:
             prediction = 'yes' if yes_score > no_score else 'no'
             true_value = tweet[2]
             label = 'correct' if prediction == true_value else 'wrong'
-
-            if prediction == true_value:
-                correct_prediction+=1
-                conf_matrix[0][0] += 1
-            elif prediction == 'yes' and true_value == 'no':
-                conf_matrix[0][1] += 1
-            elif prediction == 'no' and true_value == 'yes':
-                conf_matrix[1][0] += 1
-            else:
-                conf_matrix[1][1] += 1
-
+            
+            utils.build_conf_matrix(prediction, true_value, conf_matrix)
             self.trace_list.append(f'{tweet[0]}  {prediction}  {best_score}  {true_value}  {label}')
 
-        self.eval_file(correct_prediction/len(data), conf_matrix)
+        self.eval_file(conf_matrix)
         self.trace_file()
 
     def conditional(self, word: str, flag: str):
@@ -57,27 +47,18 @@ class NaiveBayes:
         totalOccurencesInClass = self.numberOfYes if flag == 'yes' else self.numberOfNo
         return (wordOccurencesInClass + self.smoothing) / (totalOccurencesInClass + (self.vocabularySize * self.smoothing))
 
-    def eval_file(self, precision: float, conf_matrix):
+    def eval_file(self, conf_matrix):
         '''
         Produces the evaluation file for the model.
         '''
         assert len(self.trace_list) > 0, "Make sure you make predictions first!"
         vocabularyType = 'OV' if self.originalVocabulary else 'FV'
-        TP = conf_matrix[0][0]
-        FP = conf_matrix[0][1]
-        FN = conf_matrix[1][0]
-        TN = conf_matrix[1][1]
-        yes_P = TP / (TP + FP)
-        no_P = TN / (TN + FN)
-        yes_R = TP / (TP + FN)
-        no_R = TN / (TN + FP)
-        yes_F1 = TP / (TP + (0.5 * (FP + FN)))
-        no_F1 = TN / (TN + (0.5 * (FP + FN)))
+        metrics = utils.get_metrics(conf_matrix)
         with open(f"eval_NB_BOW_{vocabularyType}.txt", "w") as f:
-            f.write(f'{round(precision, 4)}\n')
-            f.write(f'{round(yes_P, 4)}  {round(no_P, 4)}\n')
-            f.write(f'{round(yes_R, 4)}  {round(no_R, 4)}\n')
-            f.write(f'{round(yes_F1, 4)}  {round(no_F1, 4)}')
+            f.write(f'{round(metrics["accuracy"], 4)}\n')
+            f.write(f'{round(metrics["precision"]["yes"], 4)}  {round(metrics["precision"]["yes"], 4)}\n')
+            f.write(f'{round(metrics["recall"]["yes"], 4)}  {round(metrics["recall"]["no"], 4)}\n')
+            f.write(f'{round(metrics["F1"]["yes"], 4)}  {round(metrics["F1"]["no"], 4)}')
 
     def trace_file(self):
         '''
@@ -92,5 +73,5 @@ class NaiveBayes:
 
 TRAINING_FILE = "data/covid_training.tsv"
 TESTING_FILE = "data/covid_test_public.tsv"
-model = NaiveBayes(TESTING_FILE, isOriginal=True)
+model = NaiveBayes(TESTING_FILE, isOriginal=False)
 model.predict()

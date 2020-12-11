@@ -51,3 +51,49 @@ def total_word_in_class(vocabulary: dict, getYes = True) -> int:
         counter += vocabulary[key][position]
 
     return counter
+
+def build_conf_matrix(prediction: str, true_value: str, conf_matrix):
+    '''
+    Actively builds the confusion matrix per tweet visited.
+    '''
+    if prediction == true_value:
+        conf_matrix[0][0] += 1 #TP
+    elif prediction == 'yes' and true_value == 'no':
+        conf_matrix[0][1] += 1 #FP
+    elif prediction == 'no' and true_value == 'yes':
+        conf_matrix[1][0] += 1 #FN
+    else:
+        conf_matrix[1][1] += 1 #TN
+
+def get_metrics(conf_matrix) -> dict:
+    '''
+    Computes the metrics for evaluation
+    '''
+    TP = conf_matrix[0][0]
+    FP = conf_matrix[0][1]
+    FN = conf_matrix[1][0]
+    TN = conf_matrix[1][1]
+    accuracy = (TP + TN) / (TP + FP + FN + TN)
+    yes_P = TP / (TP + FP)
+    no_P = TN / (TN + FN)
+    yes_R = TP / (TP + FN)
+    no_R = TN / (TN + FP)
+    yes_F1 = TP / (TP + (0.5 * (FP + FN)))
+    no_F1 = TN / (TN + (0.5 * (FP + FN)))
+
+    metrics = {
+        'accuracy': accuracy,
+        'precision': {
+            'yes': yes_P,
+            'no': no_P
+        },
+        'recall': {
+            'yes': yes_R,
+            'no': no_R
+        },
+        'F1': {
+            'yes': yes_F1,
+            'no': no_F1
+        }
+    }
+    return metrics
