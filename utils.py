@@ -12,14 +12,14 @@ def load_data(filename: str):
     df=pd.read_csv(filename, sep="\t", header=header)
     return df.values
 
-def build_vocabulary(dictionary: dict, tweet: list, sentiment: str) -> dict:
+def build_vocabulary(dictionary: dict, tokensList: list, sentiment: str) -> dict:
     '''
     The following function builds a vocabulary for every tweet & the
     sentiment associated with the tweet.
     '''
     isFactual = sentiment == 'yes'
 
-    for tokens in tweet:
+    for tokens in tokensList:
         if tokens not in dictionary:
             dictionary[tokens] = [1,0] if isFactual else [0,1]
         else:
