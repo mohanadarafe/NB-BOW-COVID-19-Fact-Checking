@@ -1,4 +1,4 @@
-import os, shutil
+import os
 from naive_bayes import NaiveBayes
 
 TRAINING_FILE = "data/covid_training.tsv"

@@ -1,7 +1,5 @@
 import os
-import numpy as np
 import pandas as pd
-from nltk import word_tokenize
 
 def load_data(filename: str):
     '''
