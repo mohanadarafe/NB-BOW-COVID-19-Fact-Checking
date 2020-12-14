@@ -1,4 +1,6 @@
 import utils
+from collections import Counter
+
 
 def originalVocabulary(filename: str) -> dict:
     '''
@@ -43,5 +45,16 @@ if __name__ == "__main__":
     print(f'Count of words in NO class in OV: {utils.total_word_in_class(d1, False)}')
     print(f'Count of words in YES class in FV: {utils.total_word_in_class(d2)}')
     print(f'Count of words in NO class in FV: {utils.total_word_in_class(d2, False)}')
-    print(f'Count of YES tweets: {utils.total_yes_no(TRAINING_FILE)}')
-    print(f'Count of YES tweets: {utils.total_yes_no(TRAINING_FILE, False)}')
+    print(f'Count of YES tweets in training file: {utils.total_yes_no(TRAINING_FILE)}')
+    print(f'Count of YES tweets in testing file: {utils.total_yes_no(TRAINING_FILE, False)}')
+    c1 = dict(Counter(d1))
+    c2 = dict(Counter(d2))
+    top10orig = sorted(c1.items(),reverse=True, key=lambda x: x[1])[:10]
+    top10filter = sorted(c2.items(),reverse=True, key=lambda x: x[1])[:10]
+    print('\nThe top 10 most frequent terms in the original set:')
+    for w in top10orig:
+        print(f"{w[0]}\t{sum(w[1])}")
+
+    print('\nThe top 10 most frequent terms filtered set:')
+    for w in top10filter:
+        print(f"{w[0]}\t{sum(w[1])}")
